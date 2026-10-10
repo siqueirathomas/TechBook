@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#11111b">
+  <meta name="description" content="TechBook — seu caderno digital de estudos em tecnologia.">
+  <title>TechBook | Caderno de Tecnologia</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" type="image/png" href="./icon.png">
+  <meta name="theme-color" content="#6d28d9">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" data-view="home">
+        <span class="brand-mark">T</span>
+        <span>
+          <strong>TechBook</strong>
+          <small>Caderno de tecnologia</small>
+        </span>
+      </a>
+
+      <button class="new-note-btn" id="newNoteBtn">
+        <span>＋</span> Nova anotação
+      </button>
+
+      <nav class="main-nav">
+        <span class="nav-label">ESPAÇO DE ESTUDO</span>
+        <button class="nav-item active" data-view="home"><span>⌂</span> Visão geral</button>
+        <button class="nav-item" data-view="notes"><span>▤</span> Minhas anotações</button>
+        <button class="nav-item" data-view="favorites"><span>☆</span> Favoritos</button>
+
+        <span class="nav-label">BIBLIOTECA TÉCNICA</span>
+        <button class="nav-item" data-area="Hardware"><span>🧩</span> Hardware</button>
+        <button class="nav-item" data-area="Software"><span>💿</span> Software</button>
+        <button class="nav-item" data-area="Suporte e manutenção"><span>🛠️</span> Suporte e manutenção</button>
+        <button class="nav-item" data-area="Redes"><span>🌐</span> Redes</button>
+        <button class="nav-item" data-area="Segurança"><span>🛡️</span> Segurança</button>
+        <button class="nav-item" data-area="Programação"><span>💻</span> Programação</button>
+
+        <span class="nav-label">APLICATIVO</span>
+        <button class="nav-item" data-view="settings"><span>⚙</span> Configurações</button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="local-status">
+          <span class="status-dot"></span>
+          <div><strong>Dados locais</strong><small>Salvos neste navegador</small></div>
+        </div>
+        <small class="version">TECHBOOK · V2.0</small>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="breadcrumbs">
+          <button class="mobile-menu" id="mobileMenuBtn" aria-label="Abrir menu">☰</button>
+          <span>TechBook</span><span class="breadcrumb-separator">/</span>
+          <strong id="breadcrumbCurrent">Visão geral</strong>
+        </div>
+        <div class="top-actions">
+          <label class="global-search">
+            <span>⌕</span>
+            <input id="globalSearch" type="search" placeholder="Buscar assuntos e anotações...">
+            <kbd>Ctrl K</kbd>
+          </label>
+          <button class="icon-btn" id="topSettingsBtn" title="Configurações">⚙</button>
+        </div>
+      </header>
+
+      <section class="page" id="pageContent"></section>
+
+      <footer class="app-footer">
+        TechBook · Aprender, registrar e evoluir.
+      </footer>
+    </main>
+  </div>
+
+  <dialog id="noteDialog" class="modal">
+    <form id="noteForm">
+      <div class="modal-header">
+        <div>
+          <span class="eyebrow">SEU CADERNO</span>
+          <h2 id="noteDialogTitle">Nova anotação</h2>
+        </div>
+        <button type="button" class="close-dialog icon-btn" aria-label="Fechar">✕</button>
+      </div>
+
+      <input type="hidden" id="noteId">
+
+      <label for="noteTitle">Título</label>
+      <input id="noteTitle" maxlength="150" required placeholder="Ex.: Anotações sobre memória RAM">
+
+      <div class="form-grid">
+        <div>
+          <label for="noteArea">Área de estudo</label>
+          <select id="noteArea" required>
+            <option>Hardware</option>
+            <option>Software</option>
+            <option>Suporte e manutenção</option>
+            <option>Redes</option>
+            <option>Segurança</option>
+            <option>Programação</option>
+          </select>
+        </div>
+        <div>
+          <label for="noteLanguage">Linguagem ou curso</label>
+          <input id="noteLanguage" maxlength="100" placeholder="Ex.: Java, Curso de Hardware...">
+        </div>
+      </div>
+
+      <label for="noteType">Tipo de registro</label>
+      <select id="noteType">
+        <option value="pessoal">Anotação pessoal</option>
+        <option value="referencia">Material de referência pessoal</option>
+      </select>
+
+      <label for="noteContent">Conteúdo</label>
+      <textarea id="noteContent" rows="10" required placeholder="Registre aqui o que você aprendeu no curso, livro ou estudo..."></textarea>
+
+      <label class="favorite-check">
+        <input type="checkbox" id="noteFavorite">
+        Marcar como favorito
+      </label>
+
+      <div class="modal-actions">
+        <button type="button" class="secondary-btn close-dialog">Cancelar</button>
+        <button type="submit" class="primary-btn">Salvar anotação</button>
+      </div>
+    </form>
+  </dialog>
+
+  <input type="file" id="importFile" accept=".json,application/json" hidden>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+  <script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("./service-worker.js")
+        .then(() => console.log("TechBook: modo offline preparado."))
+        .catch((error) => {
+          console.error("Erro ao registrar o modo offline:", error);
+        });
+    });
+  }
+</script>
+
+
+
+<script src="./supabase-config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  window.techbookSupabase = window.supabase.createClient(
+    window.SUPABASE_URL,
+    window.SUPABASE_PUBLISHABLE_KEY
+  );
+</script>
+<script src="./auth.js"></script>
+<script src="./sync.js"></script>
+
+
+
+</body>
+</html>
